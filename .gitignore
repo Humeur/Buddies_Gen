@@ -1,0 +1,56 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#Cmake related
+*.cmake
+*.txt
+CMakeFiles/
+_deps/
+Makefile
+nftest
+*./!CMakeList.txt
+!Findraylib.cmake
+build/
+cmake-build-debug
+
+#Editors related
+.idea/
+.vscode/
+Testing/
+
+#Buddy related
+buddies.png
+out/
+
+#Mac related
+.DS_Store
