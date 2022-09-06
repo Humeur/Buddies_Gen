@@ -2,7 +2,7 @@
 
 namespace buddy {
 
-BuddyGenerator::BuddyGenerator(unsigned seed) : rdm(seed), canvas("assets/canvas.png") {
+BuddyGenerator::BuddyGenerator(unsigned seed) : rdm(seed), canvas(2400, 2400) {
 }
 
 BuddyGenerator::~BuddyGenerator() {
