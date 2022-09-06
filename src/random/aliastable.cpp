@@ -8,8 +8,7 @@ void AliasTable::initialize() {
     std::unique_ptr<size_t[]> smallBlock(new size_t[this->size]);
 
     if (!normalProbs || !largeBlock || !smallBlock) {
-        std::cout << "Error: memory allocation failed!" << std::endl;
-        exit(1);
+        throw std::runtime_error("Failed alias table allocation");
     }
 
     double sum = 0;

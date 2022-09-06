@@ -7,6 +7,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <stdexcept>
 
 namespace buddy {
 
