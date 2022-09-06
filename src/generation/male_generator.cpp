@@ -2,47 +2,47 @@
 
 namespace buddy {
 
-void MaleBuddyGenerator::generateBackground(Buddy &buddy, random_type &random) {
-    const Attribute *background = background::BACKGROUNDS.random(random);
+static void generateBackground(Buddy &buddy, random &rdm) {
+    const auto *background = background::BACKGROUNDS(rdm);
     buddy.addLayer(background->image);
     buddy.addAttribute(background::ATTRIBUTE_NAME, background->name);
 }
 
-void MaleBuddyGenerator::generateSkin(Buddy &buddy, random_type &random) {
-    if (random() % 50 == 0) {
-        buddy.addAttribute(skin::ATTRIBUTE_NAME, skin::GHOST_ATTRIBUTE_VALUE);
-        buddy.addLayer(skin::GHOST);
+static void generateSkin(Buddy &buddy, random &rdm) {
+    if (rdm() % 50 == 0) {
+        buddy.addAttribute(skin::ATTRIBUTE_NAME, skin::GHOST.name);
+        buddy.addLayer(skin::GHOST.image);
     } else {
-        auto skin = skin::SKINS.random(random);
+        auto skin = skin::SKINS(rdm);
         buddy.addAttribute(skin::ATTRIBUTE_NAME, skin->name);
         buddy.addLayer(skin::SKIN, *skin);
         buddy.addLayer(skin::BASE);
     }
 }
 
-void MaleBuddyGenerator::generateMouth(Buddy &buddy, random_type &random) {
-    bool beard = random() & 1;
+static void generateMouth(Buddy &buddy, random &rdm) {
+    bool beard = rdm() & 1;
     if (beard) {
-        auto beard = mouth::FACIAL_HAIR.random(random);
+        auto beard = mouth::FACIAL_HAIR(rdm);
         if (!buddy.getHairColor()) {
-            buddy.setHairColor(*hair::NORMAL_HAIR_COLORS.random(random));
+            buddy.setHairColor(*hair::NORMAL_HAIR_COLORS(rdm));
             buddy.addAttribute(hair::COLOR_ATTRIBUTE_NAME, buddy.getHairColor()->name);
         }
         buddy.addAttribute(mouth::FACIAL_HAIR_NAME, beard->name);
         buddy.addLayer(beard->image, *buddy.getHairColor());
     } else {
-        auto mouth = mouth::MALE.random(random);
+        auto mouth = mouth::MALE(rdm);
         buddy.addAttribute(mouth::ATTRIBUTE_NAME, mouth->name);
         buddy.addLayer(mouth->image);
     }
 }
 
-void MaleBuddyGenerator::generateHair(Buddy &buddy, random_type &random) {
-    bool hair = random() & 1;
+static void generateHair(Buddy &buddy, random &rdm) {
+    bool hair = rdm() & 1;
     if (hair) {
-        ColoredAttribute *hair = hair::MALE.random(random);
+        const auto *hair = hair::MALE(rdm);
         if (hair->colors != nullptr) {
-            HexColor *hairColor = hair->colors->random(random);
+            const auto *hairColor = hair->colors->operator()(rdm);
             buddy.setHairColor(*hairColor);
             buddy.addAttribute(hair::ATTRIBUTE_NAME, hair->name);
             buddy.addAttribute(hair::COLOR_ATTRIBUTE_NAME, hairColor->name);
@@ -52,10 +52,10 @@ void MaleBuddyGenerator::generateHair(Buddy &buddy, random_type &random) {
             buddy.addLayer(hair->image);
         }
     } else {
-        auto *top = top::MALE.random(random);
+        auto *top = top::MALE(rdm);
         buddy.addAttribute(top::ATTRIBUTE_NAME, top->name);
         if (top->colors) {
-            auto topColor = top->colors->random(random);
+            auto topColor = top->colors->operator()(rdm);
             buddy.addAttribute(top::COLOR_ATTRIBUTE_NAME, topColor->name);
             buddy.addLayer(top->image, *topColor);
         } else {
@@ -64,11 +64,11 @@ void MaleBuddyGenerator::generateHair(Buddy &buddy, random_type &random) {
     }
 }
 
-void MaleBuddyGenerator::generateEyes(Buddy &buddy, random_type &random) {
-    auto *eyes = eye::EYES.random(random);
+static void generateEyes(Buddy &buddy, random &rdm) {
+    auto *eyes = eye::EYES(rdm);
     buddy.addAttribute(eye::ATTRIBUTE_NAME, eyes->name);
     if (eyes->colors != nullptr) {
-        auto eyeColor = eyes->colors->random(random);
+        auto eyeColor = eyes->colors->operator()(rdm);
         buddy.addAttribute(eye::COLOR_ATTRIBUTE_NAME, eyeColor->name);
         buddy.addLayer(eyes->image, *eyeColor);
     } else {
@@ -76,14 +76,14 @@ void MaleBuddyGenerator::generateEyes(Buddy &buddy, random_type &random) {
     }
 }
 
-Buddy MaleBuddyGenerator::generateBuddy(random_type &random) {
+Buddy generateMale(random &rdm) {
     Buddy buddy;
     buddy.addAttribute(type::ATTRIBUTE_NAME, type::HUMAN_ATTRIBUTE_VALUE);
-    generateBackground(buddy, random);
-    generateSkin(buddy, random);
-    generateHair(buddy, random);
-    generateMouth(buddy, random);
-    generateEyes(buddy, random);
+    generateBackground(buddy, rdm);
+    generateSkin(buddy, rdm);
+    generateHair(buddy, rdm);
+    generateMouth(buddy, rdm);
+    generateEyes(buddy, rdm);
     return buddy;
 }
 

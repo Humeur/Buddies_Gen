@@ -11,12 +11,13 @@ namespace buddy {
 
 class Buddy {
     public:
-        using value_type = std::pair<std::string, std::string>;
+        using attribute = std::pair<std::string_view, std::string_view>;
+        using layer = std::pair<const Image &, Color>;
     private:
-        std::list<value_type> attributes;
-        std::list<std::pair<Image, Color>> layers;
-        std::optional<HexColor> hairColor;
-        bool containsAttribute(const value_type &attribute) const {
+        std::list<attribute> attributes;
+        std::list<layer> layers;
+        std::optional<ColorAttribute> hairColor;
+        bool containsAttribute(const attribute &attribute) const {
             for (auto &[key, value] : this->attributes) {
                 if (key == attribute.first && value == attribute.second) {
                     return true;
@@ -26,19 +27,11 @@ class Buddy {
             return false;
         }
     public:
-        void addAttribute(const std::string &name, const std::string &value) {
+        void addAttribute(std::string_view name, std::string_view value) {
             this->attributes.emplace_back(name, value);
         }
 
-        [[nodiscard]] const std::list<std::pair<std::string, std::string>> &getAttributes() const {
-            return this->attributes;
-        }
-
-        [[nodiscard]] const std::list<std::pair<Image, Color>> &getLayers() const {
-            return this->layers;
-        }
-
-        void addLayer(const Image &image, const Color &color = WHITE) {
+        void addLayer(const Image &image, Color color = WHITE) {
             this->layers.emplace_back(image, color);
         }
 
@@ -51,11 +44,10 @@ class Buddy {
                 canvas.merge(image, offsetX, offsetY, color);
             }
 
-            EMPTY.copy(canvas, offsetX, offsetY);
+            PLACEHOLDER.copy(canvas, offsetX, offsetY);
             stringstream ss;
             ss << "out/images/" << id << ".png";
-            EMPTY.save(ss.str().c_str());
-            ss = stringstream();
+            PLACEHOLDER.save(ss.str().c_str());
             ss << "out/metadatas/" << id;
             ofstream meta(ss.str());
             ss << "yo" << std::endl;
@@ -77,17 +69,17 @@ class Buddy {
             meta << '}';
         }
 
-        void setHairColor(const HexColor &color) {
+        void setHairColor(const ColorAttribute &color) {
             this->hairColor = color;
         }
 
-        [[nodiscard]] const std::optional<HexColor> getHairColor() const {
+        [[nodiscard]] const std::optional<ColorAttribute> getHairColor() const {
             return this->hairColor;
         }
 
         size_t hash() const {
             size_t hash = 31;
-            std::hash<std::string> h;
+            std::hash<std::string_view> h;
             for (auto &[name, attr] : this->attributes) {
                 hash ^= h(name) ^ h(attr);
                 hash *= 31;
@@ -98,6 +90,10 @@ class Buddy {
         bool operator==(const Buddy &other) const {
             if (this == &other) {
                 return true;
+            }
+
+            if (containsAttribute({type::ATTRIBUTE_NAME, type::JAR_ATTRIBUTE_VALUE})) {
+                return false;
             }
 
             if (this->attributes.size() != other.attributes.size()) {
@@ -116,16 +112,20 @@ class Buddy {
 
 };
 
+namespace std {
+
 template <>
-struct std::hash<buddy::Buddy> {
+struct hash<buddy::Buddy> {
     size_t operator()(const buddy::Buddy &buddy) const noexcept {
         return buddy.hash();
     }
 };
 
 template <>
-struct std::equal_to<buddy::Buddy> {
+struct equal_to<buddy::Buddy> {
     bool operator()(const buddy::Buddy &lhs, const buddy::Buddy &rhs) const noexcept {
         return lhs == rhs;
     }
 };
+
+}

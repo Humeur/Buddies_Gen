@@ -1,25 +1,26 @@
 #pragma once
 
 #include "../image/image.hpp"
+#include "attribute_list.hpp"
+#include <string_view>
 
 namespace buddy {
 
-struct Attribute {
-    std::string name;
+struct ImageAttribute {
+    std::string_view name;
     Image image;
+
+    ImageAttribute(std::string_view name, std::string_view imagePath) : name(name), image(imagePath.data()) {}
 };
 
-struct HexColor : Color {
-    std::string name;
-    HexColor() {}
-    HexColor(const char *name, unsigned int &&hex) : name(name) {
-        for (unsigned char *ref : { &b, &g, &r }) {
-            *ref = hex & 0xFF;
-            hex >>= 8;
-        }
-        a = 255;
-    }
+struct ColorAttribute : Color {
+    std::string_view name;
+    constexpr ColorAttribute(std::string_view name, uint64_t hex) : Color(hex), name(name) {}
 };
 
+struct ColoredImageAttribute : ImageAttribute {
+    const AttributeList<ColorAttribute> *colors;
+    ColoredImageAttribute(std::string_view name, std::string_view imagePath, const AttributeList<ColorAttribute> *colors = nullptr) : ImageAttribute(name, imagePath), colors(colors) {}
+};
 
 };

@@ -53,10 +53,4 @@ void AliasTable::initialize() {
     }
 }
 
-size_t AliasTable::sampling(std::mt19937 &random) const {
-    std::uniform_real_distribution<double> r_uni(0, 1.0);
-    int64_t k = static_cast<int64_t>(this->size * r_uni(random));
-    return r_uni(random) < probs[k] ? k : alias[k];
-}
-
 };

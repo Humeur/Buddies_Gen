@@ -3,39 +3,32 @@
 #include "attribute.hpp"
 #include "../random/aliastable.hpp"
 #include <vector>
+#include "color.hpp"
+#include <utility>
 
 namespace buddy {
 
-template <class T> 
-class AttributeList {
-    private:
-        std::vector<T *> attributes;
-        AliasTable table;
-        double totalWeight;
-    public:
-        AttributeList(std::initializer_list<std::pair<double, T *>> &&list) :
-        table(list, [] (const std::pair<double, T *> &pair) { return pair.first; }) {
-            attributes.reserve(list.size());
-            for (auto &[key, value] : list) {
-                attributes.emplace_back(value);
-            }
+template <class Type> 
+class AttributeList : private NoCopy {
+public:
+    AttributeList(std::initializer_list<std::pair<float, const Type *>> list) :
+    table(list, [] (const std::pair<float, const Type *> &pair) { return pair.first; }) {
+        attributes.reserve(list.size());
+        for (auto &[key, value] : list) {
+            attributes.emplace_back(value);
         }
+    }
+    [[nodiscard]] inline const size_t &size() const {
+        return this->attributes.size();
+    }
 
-        AttributeList(const AttributeList<T> &other) = delete;
-        AttributeList(AttributeList<T> &&other) = delete;
-
-        [[nodiscard]] inline const size_t &size() const {
-            return this->attributes.size();
-        }
-
-        template <class Random>
-        [[nodiscard]] T *random(Random &random) const {
-            return this->attributes[this->table.sampling(random)];
-        }
-};
-
-struct ColoredAttribute : Attribute {
-    const AttributeList<HexColor> *colors = nullptr;
+    template <typename Random>
+    const Type *operator()(Random &rdm) const {
+        return this->attributes[this->table(rdm)];
+    }
+private:
+    std::vector<const Type *> attributes;
+    AliasTable table;
 };
 
 }

@@ -2,30 +2,26 @@
 
 namespace buddy {
 
-BuddyGenerator::BuddyGenerator(seed_type &&seed) : random(std::move(seed)), canvas("assets/canvas.png") {
+BuddyGenerator::BuddyGenerator(unsigned seed) : rdm(seed), canvas("assets/canvas.png") {
 }
 
 BuddyGenerator::~BuddyGenerator() {
-    this->canvas.save("buddies.png");
-    delete this->dinosaurGenerator;
-    delete this->elephantGenerator;
-    delete this->maleGenerator;
-    delete this->femaleGenerator;
-    delete this->monkeyGenerator;
+    this->canvas.save("out/buddies.png");
 }
 
-void BuddyGenerator::generateBuddy(const int &id) {
-    auto generator = this->generators.random(this->random);
+void BuddyGenerator::generateBuddy(unsigned id, BuddyType type) {
     Buddy buddy;
     bool running = true;
+    BuddyGeneratorPFN generator = GENERATOR_FUNCTIONS[static_cast<unsigned char>(type)];
     while (running) {
-        buddy = generator->generateBuddy(this->random);
+        buddy = generator(this->rdm);
         if (this->buddies.emplace(buddy).second) {
             running = false;
         } else {
             this->fails++;
         }
     }
+
     buddy.save(id, this->canvas);
 }
 
@@ -34,12 +30,14 @@ void BuddyGenerator::generateBuddies() {
         std::filesystem::remove_all("out/");
     }
 
+    std::array<BuddyType, 10000> layout = generateLayout();
+
     std::filesystem::create_directory("out");
     std::filesystem::create_directory("out/metadatas");
     std::filesystem::create_directory("out/images");
 
     for (int i = 0; i < 10000; i++) {
-        generateBuddy(i);
+        generateBuddy(i, layout[i]);
     }
     std::cout << "fails: " << this->fails << std::endl;
 }

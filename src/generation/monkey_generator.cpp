@@ -2,19 +2,19 @@
 
 namespace buddy {
 
-void MonkeyBuddyGenerator::generateBackground(Buddy &buddy, random_type &random) {
-    auto background = background::BACKGROUNDS.random(random);
+static void generateBackground(Buddy &buddy, random &rdm) {
+    auto background = background::BACKGROUNDS(rdm);
     buddy.addAttribute(background::ATTRIBUTE_NAME, background->name);
     buddy.addLayer(background->image);
     buddy.addAttribute(type::ATTRIBUTE_NAME, type::MONKEY_ATTRIBUTE_VALUE);
     buddy.addLayer(special::MONKEY);
 }
 
-void MonkeyBuddyGenerator::generateEyes(Buddy &buddy, random_type &random) {
-    auto *eyes = eye::RARE_EYES.random(random);
+static void generateEyes(Buddy &buddy, random &rdm) {
+    auto *eyes = eye::RARE_EYES(rdm);
     buddy.addAttribute(eye::ATTRIBUTE_NAME, eyes->name);
     if (eyes->colors != nullptr) {
-        auto eyeColor = eyes->colors->random(random);
+        auto eyeColor = eyes->colors->operator()(rdm);
         buddy.addAttribute(eye::COLOR_ATTRIBUTE_NAME, eyeColor->name);
         buddy.addLayer(eyes->image, *eyeColor);
     } else {
@@ -22,11 +22,11 @@ void MonkeyBuddyGenerator::generateEyes(Buddy &buddy, random_type &random) {
     }
 }
 
-void MonkeyBuddyGenerator::generateTop(Buddy &buddy, random_type &random) {
-    auto top = top::MALE.random(random);
+static void generateTop(Buddy &buddy, random &rdm) {
+    auto top = top::MALE(rdm);
     buddy.addAttribute(top::ATTRIBUTE_NAME, top->name);
     if (top->colors) {
-        auto topColor = top->colors->random(random);
+        auto topColor = top->colors->operator()(rdm);
         buddy.addAttribute(top::COLOR_ATTRIBUTE_NAME, topColor->name);
         buddy.addLayer(top->image, *topColor);
     } else {
@@ -34,11 +34,11 @@ void MonkeyBuddyGenerator::generateTop(Buddy &buddy, random_type &random) {
     }
 }
 
-Buddy MonkeyBuddyGenerator::generateBuddy(random_type &random) {
+Buddy generateMonkey(random &rdm) {
     Buddy buddy;
-    generateBackground(buddy, random);
-    generateTop(buddy, random);
-    generateEyes(buddy, random);
+    generateBackground(buddy, rdm);
+    generateTop(buddy, rdm);
+    generateEyes(buddy, rdm);
     return buddy;
 }
 

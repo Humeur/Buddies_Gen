@@ -2,10 +2,13 @@
 
 namespace buddy {
 
-Buddy JarBuddyGenerator::generateBuddy(random_type &random) {
+static size_t index = 0;
+
+Buddy generateJar(random &rdm) {
     Buddy buddy;
     buddy.addAttribute(type::ATTRIBUTE_NAME, type::JAR_ATTRIBUTE_VALUE);
-    buddy.addLayer(special::JARS[this->index++]);
+    auto color = special::JARS[index].getColorAt(10, 10);
+    buddy.addLayer(special::JARS[index++]);
     return buddy;
 }
 

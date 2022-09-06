@@ -29,7 +29,12 @@ class AliasTable {
             initialize();
         }
         
-        size_t sampling(std::mt19937 &random) const;
+        template <typename Random>
+        size_t operator()(Random &rdm) const {
+            std::uniform_real_distribution<float> r_uni(0, 1.0);
+            int64_t k = static_cast<int64_t>(this->size * r_uni(rdm));
+            return r_uni(rdm) < probs[k] ? k : alias[k];
+        };
 };
 
 };
