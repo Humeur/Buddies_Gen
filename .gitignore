@@ -32,16 +32,7 @@
 *.app
 
 #Cmake related
-*.cmake
-*.txt
-CMakeFiles/
-_deps/
-Makefile
-nftest
-*./!CMakeList.txt
-!Findraylib.cmake
 build/
-cmake-build-debug
 
 #Editors related
 .idea/
