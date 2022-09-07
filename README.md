@@ -22,7 +22,7 @@
 
 <h2 align="center">Buddies Generator</h2>
 <p align="center">
-  A 24x24 pfp generator, made in C++ with the help of Raylib as part of the Buddies project.<br>
+  A 24x24 pfp generator, made in C++ with the help of <a href="https://github.com/nothings/stb">stb</a> as part of the Buddies project.<br>
   This generator was specifically made by <a href="https://github.com/bricerigagneau">Brice Rigagneau</a> and myself <a href="https://www.linkedin.com/in/livio-dal-maso-43a318198/">Livio Dal Maso</a>.
 </p>
 
