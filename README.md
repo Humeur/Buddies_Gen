@@ -4,6 +4,10 @@
   <img src="example.png" width="750" title="Luxray for Lux and Raylib :o">
 </p>
 
+<h4 align="center">
+  <b>Our initiative was not for commercial purposes and does not encourage investment in NFTs <a href="https://www.howtogeek.com/774410/heres-the-problem-with-nfts/">(in fact, it is rather an advice not to do so)</a>, at least not in the current state of the market</b>.<br>
+</h4>
+
 <p align="center">
   This project was aimed to learn how to <b>build products on the blockchain</b> and to deploy them in order to learn more about <b>web3</b>.<br>
 </p>
@@ -13,11 +17,11 @@
 </p>
 
 <p align="center">
-  We developed this project using <a href="https://soliditylang.org/">Solidity</a> for the <a href="https://en.wikipedia.org/wiki/Smart_contract">Smart Contract</a>, <a href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a> for the generator, <a href="https://fr.reactjs.org/">ReactJS</a> for the front and <a href="https://nodejs.org/en/">NodeJS</a> for the back end of our website.<br>
+  We developed this project using <a href="https://soliditylang.org/">Solidity</a> for the <a href="https://en.wikipedia.org/wiki/Smart_contract">Smart Contract</a> and <a href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a> for the generator.<br>
 </p>
 
 <p align="center">
-  This project was done by <a href="https://github.com/bricerigagneau">Brice Rigagneau</a>, <a href="https://www.linkedin.com/in/jeremiegermond-984547211/">Jérémie Germond</a> and myself <a href="https://www.linkedin.com/in/livio-dal-maso-43a318198/">Livio Dal Maso</a>.
+  This project was done by <a href="https://github.com/bricerigagneau">Brice Rigagneau</a> and myself <a href="https://www.linkedin.com/in/livio-dal-maso-43a318198/">Livio Dal Maso</a>.
 </p>
 
 <h2 align="center">Buddies Generator</h2>
