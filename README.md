@@ -1,7 +1,7 @@
 <h1 align="center">Buddies</h1>
 
 <p align="center">
-  <img src="example.png" width="750" title="Luxray for Lux and Raylib :o">
+  <img src="example.png" width="750">
 </p>
 
 <h4 align="center">
